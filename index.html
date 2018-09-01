@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to Vue</title>
+  <script src="https://unpkg.com/vue"></script>
+  <style>
+    h1 {
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <center>
+      <img src="https://vuejs.org/images/logo.png" alt="Vue logo">
+      <h1>{{ msg }}</h1>
+    </center>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        msg: 'empty'
+      },
+      created () {
+        // fetch the data when the view is created and the data is
+        // already being observed
+        this.fetchData()
+      },
+      watch: {
+        // call again the method if the route changes
+        '$route': 'fetchData'
+      },
+      methods: {
+        fetchData () {
+          this.msg = 'loading...'
+          // replace `getPost` with your data fetching util / API wrapper
+          // fetch('https://jsonplaceholder.typicode.com/todos/1')
+          fetch('http://localhost:8080/api/data/get')
+            .then(response => response.json())
+            .then(json => {
+              console.log(json)
+              this.msg = json.title
+            })
+        }
+      }
+    })
+  </script>
+</body>
+</html>
